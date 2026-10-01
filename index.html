@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>ReadSeeks — 3D Travel Diary & Spinning Earth</title>
   
   <!-- Google Fonts -->
@@ -47,44 +47,44 @@
   <!-- Collapsible Bottom Controls HUD (Defaults to collapsed ">") -->
   <div class="hud-container collapsed" id="hud-container">
     <!-- Expand / Collapse Toggle Button (Defaults to '>') -->
-    <button class="hud-toggle-btn" id="btn-toggle-hud" title="展開 / 收合控制欄">
+    <button class="hud-toggle-btn" id="btn-toggle-hud" title="展開 / 收合控制欄" aria-label="Controls">
       <span id="hud-toggle-icon">&gt;</span>
     </button>
 
     <!-- Collapsible Controls Bar -->
     <div class="hud-bar" id="hud-bar">
-      <!-- Country Map Polygons Toggle -->
-      <button class="hud-btn active" id="btn-toggle-countries" title="國家色塊地圖 (開/關)">
-        <span>🗺️</span>
-      </button>
-
-      <!-- Country Map Color Style Selector -->
-      <select class="hud-select" id="select-country-style" title="國家地圖色彩風格">
-        <option value="blocks">多彩色塊</option>
-        <option value="visited">足跡高亮</option>
-        <option value="continents">大洲分區</option>
-      </select>
-
-      <div class="hud-divider"></div>
-
-      <!-- Travel Routes Toggle -->
-      <button class="hud-btn active" id="btn-toggle-routes" title="飛行航線 (開/關)">
-        <span>✈️</span>
-      </button>
+      <!-- Country Map Group -->
+      <div class="hud-group">
+        <button class="hud-btn active" id="btn-toggle-countries" title="國家色塊地圖 (開/關)">
+          <span>🗺️</span>
+          <span class="hud-label-text">地圖</span>
+        </button>
+        <select class="hud-select" id="select-country-style" title="國家地圖色彩風格">
+          <option value="blocks">多彩色塊</option>
+          <option value="visited">足跡高亮</option>
+          <option value="continents">大洲分區</option>
+        </select>
+      </div>
 
       <div class="hud-divider"></div>
 
-      <!-- Earth Texture Switcher -->
-      <select class="hud-select" id="select-texture" title="地球貼圖風格">
-        <option value="night">夜景光芒</option>
-        <option value="blue">藍色大理石</option>
-        <option value="dark">極簡黑調</option>
-      </select>
+      <!-- Routes & Texture Group -->
+      <div class="hud-group">
+        <button class="hud-btn active" id="btn-toggle-routes" title="飛行航線 (開/關)">
+          <span>✈️</span>
+          <span class="hud-label-text">航線</span>
+        </button>
+        <select class="hud-select" id="select-texture" title="地球貼圖風格">
+          <option value="night">夜景光芒</option>
+          <option value="blue">藍色大理石</option>
+          <option value="dark">極簡黑調</option>
+        </select>
+      </div>
 
       <div class="hud-divider"></div>
 
       <!-- Reset Camera View (Positioned directly over Taiwan) -->
-      <button class="hud-btn" id="btn-reset-view" title="重設視角至台灣">
+      <button class="hud-btn btn-reset-taiwan" id="btn-reset-view" title="重設視角至台灣">
         <span>🇹🇼</span>
         <span style="font-size: 11px; font-weight: 600;">Reset</span>
       </button>

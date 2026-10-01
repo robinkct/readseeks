@@ -813,17 +813,27 @@ function initUIEvents() {
     });
   }
 
-  // Collapsible HUD Toggle
+  // Collapsible HUD Toggle (Touch & Click debounced)
   const hudContainer = document.getElementById('hud-container');
   const btnToggleHud = document.getElementById('btn-toggle-hud');
   const hudIcon = document.getElementById('hud-toggle-icon');
   if (btnToggleHud && hudContainer) {
-    btnToggleHud.addEventListener('click', () => {
+    let lastToggleTime = 0;
+    const handleToggle = (e) => {
+      if (e) {
+        e.stopPropagation();
+      }
+      const now = Date.now();
+      if (now - lastToggleTime < 350) return;
+      lastToggleTime = now;
+
       const isCollapsed = hudContainer.classList.toggle('collapsed');
       if (hudIcon) {
         hudIcon.textContent = isCollapsed ? '>' : '×';
       }
-    });
+    };
+    btnToggleHud.addEventListener('click', handleToggle);
+    btnToggleHud.addEventListener('touchend', handleToggle, { passive: true });
   }
 
   // Modal Backdrop Close

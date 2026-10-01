@@ -31,7 +31,7 @@ def main():
             with socketserver.TCPServer(("", attempt_port), Handler) as httpd:
                 url = f"http://localhost:{attempt_port}"
                 print("\n" + "="*60)
-                print(f"🌍 Wanderlust Travel Diary running at:")
+                print(f"🌍 ReadSeeks Travel Diary running at:")
                 print(f"   👉 {url}")
                 print("="*60)
                 print("Press Ctrl+C to stop the server.\n")
