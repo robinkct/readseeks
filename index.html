@@ -33,6 +33,10 @@
 
     <!-- Actions -->
     <div class="header-actions">
+      <button class="btn-header" id="btn-open-countdown" title="查看啟程倒數通知">
+        <span>⏳</span>
+        <span>啟程通知</span>
+      </button>
       <button class="btn-header" id="btn-open-drawer" title="Open Destination Index">
         <span>🗂️</span>
         <span>Travel Index</span>
@@ -110,6 +114,58 @@
       <!-- Dynamically populated -->
     </div>
   </aside>
+
+  <!-- Departure Countdown Notice Modal -->
+  <div class="modal-backdrop" id="countdown-modal-backdrop">
+    <div class="countdown-modal" id="countdown-modal-card">
+      <button class="modal-close-btn" id="btn-close-countdown" title="關閉">&times;</button>
+      
+      <div class="countdown-modal-header">
+        <h2 class="countdown-heading">出發倒數</h2>
+      </div>
+
+      <!-- 倒數時間區塊 -->
+      <div class="countdown-clock-wrapper">
+        <div class="countdown-unit-box">
+          <span class="countdown-digits" id="cd-days">00</span>
+          <span class="countdown-label">天 DAYS</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-unit-box">
+          <span class="countdown-digits" id="cd-hours">00</span>
+          <span class="countdown-label">時 HOURS</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-unit-box">
+          <span class="countdown-digits" id="cd-mins">00</span>
+          <span class="countdown-label">分 MINS</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-unit-box">
+          <span class="countdown-digits cd-seconds" id="cd-secs">00</span>
+          <span class="countdown-label">秒 SECS</span>
+        </div>
+      </div>
+
+      <!-- 倒數下方的心意文字 (動態由 notice.txt 載入) -->
+      <div class="countdown-letter-wrapper">
+        <div class="letter-body-text" id="notice-content">謝謝這段日子在生活、工作上的照顧與陪伴！
+
+我準備去環遊世界，這是準備帶去世界各地、送給沿途相遇朋友的信物。
+在啟程前，也想先遞交到你手中。
+
+網頁現在還在倒數中，出發後會持續把沿途的風景更新上去
+累了的時候，歡迎上來看看外面的世界，監督我有沒有偷懶不更新喔~</div>
+      </div>
+
+      <!-- 操作按鈕 -->
+      <div class="countdown-modal-actions">
+        <button type="button" class="btn-countdown-enter" id="btn-countdown-enter">
+          <span>開啟世界地圖探索 🌍</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Full Travel Diary Reader Modal -->
   <div class="modal-backdrop" id="diary-modal-backdrop">

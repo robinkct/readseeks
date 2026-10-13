@@ -94,6 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
   renderDestinationsList();
   renderTimeline();
   updateStatsHUD();
+  loadNoticeText();
+
+  // 網頁點開來時，先跳出啟程倒數與心意通知視窗
+  setTimeout(() => {
+    openCountdownModal();
+  }, 450);
 });
 
 /**
@@ -632,6 +638,114 @@ function openDiaryModal(destinationId) {
   }
 }
 
+// ==========================================================================
+// Departure Countdown Notice Modal & Timer
+// ==========================================================================
+
+let countdownInterval = null;
+
+/**
+ * Get target departure date (November 8th of current year)
+ */
+function getTargetDepartureDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  // 11 月 8 日 00:00:00 (JavaScript month index 10 = November)
+  const target = new Date(year, 10, 8, 0, 0, 0);
+  return { target, year };
+}
+
+/**
+ * Load Notice text dynamically from notice.txt
+ */
+async function loadNoticeText() {
+  const noticeEl = document.getElementById('notice-content');
+  if (!noticeEl) return;
+
+  try {
+    const res = await fetch('./notice.txt?t=' + Date.now());
+    if (res.ok) {
+      const text = await res.text();
+      if (text.trim()) {
+        noticeEl.textContent = text.trim();
+      }
+    }
+  } catch (err) {
+    // 若在本地 file:// 協議或無伺服器環境下，保留預設 HTML 文本
+    console.log('Notice text loaded from default fallback');
+  }
+}
+
+/**
+ * Update Countdown Timer display values
+ */
+function updateCountdownDisplay() {
+  const { target } = getTargetDepartureDate();
+  const now = new Date();
+  const diff = target.getTime() - now.getTime();
+
+  const daysEl = document.getElementById('cd-days');
+  const hoursEl = document.getElementById('cd-hours');
+  const minsEl = document.getElementById('cd-mins');
+  const secsEl = document.getElementById('cd-secs');
+
+  if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
+
+  if (diff <= 0) {
+    daysEl.textContent = '00';
+    hoursEl.textContent = '00';
+    minsEl.textContent = '00';
+    secsEl.textContent = '00';
+
+    const heading = document.querySelector('.countdown-heading');
+    if (heading) {
+      heading.textContent = '出發囉！🎉';
+    }
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / 1000 / 60) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  daysEl.textContent = String(days).padStart(2, '0');
+  hoursEl.textContent = String(hours).padStart(2, '0');
+  minsEl.textContent = String(minutes).padStart(2, '0');
+  secsEl.textContent = String(seconds).padStart(2, '0');
+}
+
+/**
+ * Start the 1-second countdown ticker
+ */
+function startCountdownTicker() {
+  updateCountdownDisplay();
+  if (countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(updateCountdownDisplay, 1000);
+}
+
+/**
+ * Open Departure Countdown Modal
+ */
+function openCountdownModal() {
+  const modal = document.getElementById('countdown-modal-backdrop');
+  if (modal) {
+    modal.classList.add('open');
+    loadNoticeText();
+    startCountdownTicker();
+  }
+}
+
+/**
+ * Close Departure Countdown Modal
+ */
+function closeCountdownModal() {
+  const modal = document.getElementById('countdown-modal-backdrop');
+  if (modal) {
+    modal.classList.remove('open');
+  }
+}
+
 /**
  * Close Full Travel Diary Modal
  */
@@ -836,6 +950,31 @@ function initUIEvents() {
     btnToggleHud.addEventListener('touchend', handleToggle, { passive: true });
   }
 
+  // Countdown Modal Event Listeners
+  const btnOpenCountdown = document.getElementById('btn-open-countdown');
+  if (btnOpenCountdown) {
+    btnOpenCountdown.addEventListener('click', openCountdownModal);
+  }
+
+  const btnCloseCountdown = document.getElementById('btn-close-countdown');
+  if (btnCloseCountdown) {
+    btnCloseCountdown.addEventListener('click', closeCountdownModal);
+  }
+
+  const btnCountdownEnter = document.getElementById('btn-countdown-enter');
+  if (btnCountdownEnter) {
+    btnCountdownEnter.addEventListener('click', closeCountdownModal);
+  }
+
+  const countdownBackdrop = document.getElementById('countdown-modal-backdrop');
+  if (countdownBackdrop) {
+    countdownBackdrop.addEventListener('click', (e) => {
+      if (e.target === countdownBackdrop) {
+        closeCountdownModal();
+      }
+    });
+  }
+
   // Modal Backdrop Close
   const modalBackdrop = document.getElementById('diary-modal-backdrop');
   if (modalBackdrop) {
@@ -852,6 +991,7 @@ function initUIEvents() {
       closeDiaryModal();
       closeDrawer();
       closeAddModal();
+      closeCountdownModal();
     }
   });
 
