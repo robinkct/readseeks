@@ -599,6 +599,38 @@ html, body {
   text-transform: uppercase;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-sm);
+  color: #f1f5f9;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.btn-header:hover {
+  background: rgba(30, 41, 69, 0.85);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(99, 102, 241, 0.25);
+}
+
 /* ==========================================================================
    Collapsible Bottom Controls HUD (Default collapsed '>')
    ========================================================================== */
@@ -1830,22 +1862,49 @@ html, body {
   }
 }
 
+/* Hide Add Journey button per user request */
+#btn-add-journey {
+  display: none !important;
+}
+
 /* ==========================================================================
    Departure Countdown Modal & Letter Card
    ========================================================================== */
 
+/* Transparent backdrop so rotating Earth in background is fully visible */
+#countdown-modal-backdrop {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: none;
+  padding: 16px;
+}
+
+#countdown-modal-backdrop.open {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#countdown-modal-backdrop .countdown-modal {
+  pointer-events: auto;
+}
+
 .countdown-modal {
   position: relative;
-  width: 580px;
-  max-width: 94vw;
+  width: 100%;
+  max-width: 580px;
+  min-width: 0;
+  box-sizing: border-box;
   max-height: 90vh;
-  background: linear-gradient(155deg, rgba(15, 23, 42, 0.96) 0%, rgba(9, 13, 26, 0.98) 100%);
-  border: 1px solid var(--glass-border-bright);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 32px 85px rgba(0, 0, 0, 0.9), 0 0 50px rgba(99, 102, 241, 0.22);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 34px 30px 28px;
+  padding: 24px 20px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1886,14 +1945,18 @@ html, body {
   justify-content: center;
   gap: 8px;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   margin-bottom: 22px;
 }
 
 .countdown-unit-box {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   max-width: 96px;
-  background: rgba(18, 25, 42, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 25, 42, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-md);
   padding: 12px 6px;
   display: flex;
@@ -1944,13 +2007,16 @@ html, body {
 /* Warm Notice Card (Dynamic from notice.txt) */
 .countdown-letter-wrapper {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: rgba(22, 30, 52, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-left: 3px solid #6366f1;
   border-radius: var(--radius-md);
   padding: 22px 24px;
   text-align: left;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   position: relative;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
@@ -1960,7 +2026,8 @@ html, body {
   line-height: 1.8;
   color: #e2e8f0;
   white-space: pre-line;
-  word-break: break-word;
+  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 
 /* Countdown Modal Footer & Action */
@@ -1996,32 +2063,158 @@ html, body {
   transform: translateY(0);
 }
 
+/* Social Link Icons below Countdown Modal */
+.countdown-social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  margin-top: 18px;
+  padding-top: 4px;
+}
+
+.social-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(18, 25, 44, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #e2e8f0;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.social-icon-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.social-icon-btn:hover {
+  transform: translateY(-3px) scale(1.1);
+  color: #ffffff;
+}
+
+.social-icon-btn:hover svg {
+  transform: scale(1.08);
+}
+
+.social-icon-btn:active {
+  transform: translateY(0) scale(1);
+}
+
+/* Brand-specific hover glow & colors */
+.social-icon-btn.social-fb:hover {
+  background: #1877f2;
+  border-color: #1877f2;
+  box-shadow: 0 0 20px rgba(24, 119, 242, 0.55), 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.social-icon-btn.social-ig:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  border-color: #dc2743;
+  box-shadow: 0 0 20px rgba(220, 39, 67, 0.55), 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.social-icon-btn.social-yt:hover {
+  background: #ff0000;
+  border-color: #ff0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.55), 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.social-icon-btn.social-web:hover {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  border-color: #38bdf8;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.55), 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.social-icon-btn.social-linkedin:hover {
+  background: #0a66c2;
+  border-color: #0a66c2;
+  box-shadow: 0 0 20px rgba(10, 102, 194, 0.55), 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
 @media (max-width: 640px) {
+  #countdown-modal-backdrop {
+    padding: 10px;
+  }
+
   .countdown-modal {
-    padding: 24px 18px 20px;
-    width: 95vw;
+    padding: 20px 10px 16px;
+    width: 100%;
+    max-width: 100%;
   }
   
   .countdown-heading {
     font-size: 20px;
+    margin-bottom: 4px;
   }
   
-  .countdown-digits {
-    font-size: 24px;
+  .countdown-clock-wrapper {
+    gap: 4px;
+    margin-bottom: 16px;
   }
 
   .countdown-unit-box {
-    padding: 10px 4px;
+    flex: 1 1 0 !important;
+    max-width: none;
+    min-width: 0 !important;
+    padding: 8px 2px;
+  }
+
+  .countdown-digits {
+    font-size: 19px;
+  }
+
+  .countdown-label {
+    font-size: 8px;
+    letter-spacing: 0;
+    margin-top: 2px;
+    white-space: nowrap;
   }
 
   .countdown-separator {
-    font-size: 18px;
-    margin-bottom: 12px;
+    font-size: 14px;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+  }
+
+  .countdown-letter-wrapper {
+    padding: 16px 14px;
+    margin-bottom: 16px;
   }
 
   .letter-body-text {
-    font-size: 13.5px;
-    line-height: 1.65;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .btn-countdown-enter {
+    padding: 11px 18px;
+    font-size: 14px;
+  }
+
+  .countdown-social-links {
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .social-icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .social-icon-btn svg {
+    width: 17px;
+    height: 17px;
   }
 }
 

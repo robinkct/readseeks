@@ -975,6 +975,35 @@ function initUIEvents() {
     });
   }
 
+  // Handle click on canvas or outside countdown modal to close it (if not dragging)
+  let globePointerDownPos = { x: 0, y: 0 };
+  let isPointerDown = false;
+
+  window.addEventListener('pointerdown', (e) => {
+    isPointerDown = true;
+    globePointerDownPos = { x: e.clientX, y: e.clientY };
+  });
+
+  window.addEventListener('pointerup', (e) => {
+    if (!isPointerDown) return;
+    isPointerDown = false;
+    const dx = Math.abs(e.clientX - globePointerDownPos.x);
+    const dy = Math.abs(e.clientY - globePointerDownPos.y);
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    // If it was a clean click without dragging
+    if (dist < 6) {
+      const modalBackdrop = document.getElementById('countdown-modal-backdrop');
+      const modalCard = document.getElementById('countdown-modal-card');
+      if (modalBackdrop && modalBackdrop.classList.contains('open')) {
+        // If click was outside the modal card and not on the header toggle button
+        if (modalCard && !modalCard.contains(e.target) && !e.target.closest('#btn-open-countdown')) {
+          closeCountdownModal();
+        }
+      }
+    }
+  });
+
   // Modal Backdrop Close
   const modalBackdrop = document.getElementById('diary-modal-backdrop');
   if (modalBackdrop) {
